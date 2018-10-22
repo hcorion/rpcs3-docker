@@ -20,7 +20,7 @@ RUN \
 	apt-get update -y && \
 	\
 	apt-get -qq install -y \
-	build-essential binutils $GCC_BINARY $GXX_BINARY ninja-build git ccache $CLANG_BINARY $CLANGXX_BINARY \
+	build-essential binutils $GCC_BINARY $GXX_BINARY ninja-build git ccache $CLANG_BINARY $CLANGXX_BINARY lld-6.0 \
 	libasound2-dev libopenal-dev freeglut3-dev libudev-dev libevdev-dev libpulse-dev \
 	libwayland-dev libwayland-cursor0 libwayland-client0 libwayland-server0 \
 	desktop-file-utils dput gnupg pbuilder ubuntu-dev-tools apt-file \
