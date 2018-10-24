@@ -25,13 +25,16 @@ RUN \
 	libwayland-dev libwayland-cursor0 libwayland-client0 libwayland-server0 \
 	desktop-file-utils dput gnupg pbuilder ubuntu-dev-tools apt-file \
 	qt${QTVERMIN}-meta-minimal && \
+	echo "ps3toolchain dependencies" && \
+	apt-get -qq install -y \
+	autoconf automake bison flex libelf-dev make texinfo libncurses5-dev patch python-dev wget libtool bzip2 libgmp10-dev libssl-dev && \
 	apt-get install --only-upgrade dpkg
 	
 RUN \
 	curl -sLO https://mirrors.kernel.org/ubuntu/pool/universe/g/glew/libglew2.0_2.0.0-6_amd64.deb && \
 	curl -sLO https://mirrors.kernel.org/ubuntu/pool/universe/g/glew/libglew-dev_2.0.0-6_amd64.deb && \
-	curl -sLO https://mirrors.kernel.org/ubuntu/pool/universe/v/vulkan/libvulkan1_1.1.73+dfsg-1_amd64.deb && \
-	curl -sLO https://mirrors.kernel.org/ubuntu/pool/universe/v/vulkan/libvulkan-dev_1.1.73+dfsg-1_amd64.deb && \
+	curl -sLO https://mirrors.kernel.org/ubuntu/pool/universe/v/vulkan-loader/libvulkan1_1.1.82.0-0ubuntu1_amd64.deb && \
+	curl -sLO https://mirrors.kernel.org/ubuntu/pool/universe/v/vulkan-loader/libvulkan-dev_1.1.82.0-0ubuntu1_amd64.deb && \
 	dpkg -i ./*.deb && \
 	rm ./*.deb
 
@@ -40,3 +43,14 @@ RUN \
 	curl -sLO https://cmake.org/files/v3.8/cmake-3.8.2-Linux-x86_64.sh && \
 	sh cmake-3.8.2-Linux-x86_64.sh --skip-license && \
 	cmake --version
+
+ENV PS3DEV=/usr/local/ps3dev
+ENV PSL1GHT=$PS3DEV
+	
+RUN \
+	export PATH=$PATH:$PS3DEV/bin:$PS3DEV/ppu/bin:$PS3DEV/spu/bin && \
+	git clone https://github.com/ps3dev/ps3toolchain && \
+	cd ps3toolchain && \
+	./toolchain.sh && \
+	cd .. && \
+	rm -r ps3toolchain
