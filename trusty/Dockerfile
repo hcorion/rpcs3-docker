@@ -30,8 +30,8 @@ RUN \
 RUN \
 	curl -sLO https://mirrors.kernel.org/ubuntu/pool/universe/g/glew/libglew2.0_2.0.0-6_amd64.deb && \
 	curl -sLO https://mirrors.kernel.org/ubuntu/pool/universe/g/glew/libglew-dev_2.0.0-6_amd64.deb && \
-	curl -sLO https://mirrors.kernel.org/ubuntu/pool/universe/v/vulkan/libvulkan1_1.1.73+dfsg-1_amd64.deb && \
-	curl -sLO https://mirrors.kernel.org/ubuntu/pool/universe/v/vulkan/libvulkan-dev_1.1.73+dfsg-1_amd64.deb && \
+	curl -sLO https://mirrors.kernel.org/ubuntu/pool/universe/v/vulkan-loader/libvulkan1_1.1.82.0-0ubuntu1_amd64.deb && \
+	curl -sLO https://mirrors.kernel.org/ubuntu/pool/universe/v/vulkan-loader/libvulkan-dev_1.1.82.0-0ubuntu1_amd64.deb && \
 	dpkg -i ./*.deb && \
 	rm ./*.deb
 
