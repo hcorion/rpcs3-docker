@@ -28,10 +28,10 @@ RUN \
 	apt-get install --only-upgrade dpkg
 	
 RUN \
-	curl -sLO https://mirrors.kernel.org/ubuntu/pool/universe/g/glew/libglew2.0_2.0.0-6_amd64.deb && \
-	curl -sLO https://mirrors.kernel.org/ubuntu/pool/universe/g/glew/libglew-dev_2.0.0-6_amd64.deb && \
-	curl -sLO https://mirrors.kernel.org/ubuntu/pool/universe/v/vulkan-loader/libvulkan1_1.1.82.0-0ubuntu1_amd64.deb && \
-	curl -sLO https://mirrors.kernel.org/ubuntu/pool/universe/v/vulkan-loader/libvulkan-dev_1.1.82.0-0ubuntu1_amd64.deb && \
+	curl -sLO http://http.us.debian.org/debian/pool/main/g/glew/libglew2.1_2.1.0-4_amd64.deb && \
+	curl -sLO http://http.us.debian.org/debian/pool/main/g/glew/libglew-dev_2.1.0-4_amd64.deb && \
+	curl -sLO http://http.us.debian.org/debian/pool/main/v/vulkan-loader/libvulkan1_1.1.106.0-1_amd64.deb && \
+	curl -sLO http://http.us.debian.org/debian/pool/main/v/vulkan-loader/libvulkan-dev_1.1.106.0-1_amd64.deb && \
 	dpkg -i ./*.deb && \
 	rm ./*.deb
 
