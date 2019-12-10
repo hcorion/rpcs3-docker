@@ -1,6 +1,7 @@
 static_version=1.1
 branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
 tag=$(git describe --tags 2>/dev/null)
+distro_release=xenial
 version=""
 echo $branch
 echo $tag
@@ -13,7 +14,7 @@ else
 fi
 
 
-echo "Building rpcs3-travis-trusty as version $version."
-pushd trusty
-docker build -t rpcs3/rpcs3-travis-trusty:$version .
+echo "Building rpcs3-travis-$distro_release as version $version."
+pushd $distro_release
+docker build -t rpcs3/rpcs3-travis-$distro_release:$version .
 popd
