@@ -5,7 +5,7 @@ LABEL maintainer="hcorion"
 ENV QTVER=5.12.6
 ENV QTVERMIN=512
 ENV LLVMVER=9
-ENV CMAKEVER=3.8.2
+ENV CMAKEVER=3.16.4
 
 ENV CLANG_BINARY=clang-${LLVMVER}
 ENV CLANGXX_BINARY=clang++-${LLVMVER}
@@ -41,7 +41,7 @@ RUN \
 
 # Setup newer CMake
 RUN \
-	curl -sLO https://cmake.org/files/v3.8/cmake-${CMAKEVER}-Linux-x86_64.sh && \
+	curl -sLO https://cmake.org/files/v3.16/cmake-${CMAKEVER}-Linux-x86_64.sh && \
 	sh cmake-${CMAKEVER}-Linux-x86_64.sh --skip-license && \
 	rm ./cmake*.sh && \
 	cmake --version
