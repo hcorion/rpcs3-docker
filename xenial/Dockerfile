@@ -30,12 +30,8 @@ RUN \
 	apt-get install --only-upgrade dpkg
 	
 RUN \
-	curl -sLO http://archive.ubuntu.com/ubuntu/pool/main/g/glibc/libc6_2.29-0ubuntu2_amd64.deb && \
 	curl -sLO http://http.us.debian.org/debian/pool/main/g/glew/libglew2.1_2.1.0-4_amd64.deb && \
 	curl -sLO http://http.us.debian.org/debian/pool/main/g/glew/libglew-dev_2.1.0-4_amd64.deb && \
-	curl -sLO http://http.us.debian.org/debian/pool/main/v/vulkan-loader/libvulkan1_1.1.126.0-2_amd64.deb && \
-	curl -sLO http://http.us.debian.org/debian/pool/main/v/vulkan-loader/libvulkan-dev_1.1.126.0-2_amd64.deb && \
-	dpkg -i ./libc6*.deb && \
 	dpkg -i ./*.deb && \
 	rm ./*.deb
 
@@ -45,3 +41,17 @@ RUN \
 	sh cmake-${CMAKEVER}-Linux-x86_64.sh --skip-license && \
 	rm ./cmake*.sh && \
 	cmake --version
+
+# Need to manually build libvulkan
+#	curl -sLO http://http.us.debian.org/debian/pool/main/v/vulkan-loader/libvulkan1_1.1.126.0-2_amd64.deb
+#	curl -sLO http://http.us.debian.org/debian/pool/main/v/vulkan-loader/libvulkan-dev_1.1.126.0-2_amd64.deb
+RUN \
+	curl -sL -o Vulkan-Loader.tar.gz https://github.com/KhronosGroup/Vulkan-Loader/archive/v1.1.126.tar.gz && \
+	tar -xf Vulkan-Loader.tar.gz && \
+	cd Vulkan-Loader* && \
+	mkdir build && cd build && \
+	cmake ../ -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CC_COMPILER=$CLANG_BINARY -DCMAKE_CXX_COMPILER=$CLANGXX_BINARY \
+	-DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=/usr/lib -DCMAKE_INSTALL_SYSCONFDIR=/etc -DCMAKE_INSTALL_DATADIR=/share && \
+	ninja && \
+	ninja install
+	
