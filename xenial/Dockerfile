@@ -44,7 +44,7 @@ RUN \
 	cmake --version
 
 # Need to manually build vulkan headers and libvulkan
-ENV VULKANVER=1.1.126
+ENV VULKANVER=1.2.135
 RUN \
 	curl -sL -o Vulkan-Headers.tar.gz https://github.com/KhronosGroup/Vulkan-Headers/archive/v${VULKANVER}.tar.gz && \
 	tar -xf Vulkan-Headers*.tar.gz && \
