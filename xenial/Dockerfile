@@ -2,19 +2,20 @@ FROM ubuntu:16.04
 LABEL maintainer="hcorion"
 
 
-ENV QTVER=5.14.1
+ENV QTVER=5.14.2
 ENV QTVERMIN=514
 ENV LLVMVER=10
+ENV GCCVER=9
 
 ENV CLANG_BINARY=clang-${LLVMVER}
 ENV CLANGXX_BINARY=clang++-${LLVMVER}
 ENV LLD_BINARY=lld-${LLVMVER}
-ENV GCC_BINARY=gcc-9
-ENV GXX_BINARY=g++-9
+ENV GCC_BINARY=gcc-${GCCVER}
+ENV GXX_BINARY=g++-${GCCVER}
 
 RUN \
 	apt-get update -y && \
-	apt-get install -y curl software-properties-common && \
+	apt-get install -y curl software-properties-common apt-transport-https && \
 	curl -Lvs https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
 	add-apt-repository -y ppa:beineri/opt-qt-${QTVER}-xenial && \
 	add-apt-repository -y ppa:ubuntu-toolchain-r/test && \
@@ -22,7 +23,7 @@ RUN \
 	apt-get update -y --fix-missing && \
 	\
 	apt-get -qq install -y \
-	build-essential binutils $GCC_BINARY $GXX_BINARY ninja-build git ccache bc $CLANG_BINARY $CLANGXX_BINARY $LLD_BINARY \
+	build-essential binutils $GCC_BINARY $GXX_BINARY git ccache bc $CLANG_BINARY $CLANGXX_BINARY $LLD_BINARY \
 	libasound2-dev libopenal-dev freeglut3-dev libudev-dev libevdev-dev libpulse-dev libxrandr-dev \
 	libwayland-dev libwayland-cursor0 libwayland-client0 libwayland-server0 \
 	desktop-file-utils dput gnupg pbuilder ubuntu-dev-tools apt-file \
@@ -42,6 +43,19 @@ RUN \
 	sh cmake-${CMAKEVER}-Linux-x86_64.sh --skip-license && \
 	rm ./cmake*.sh && \
 	cmake --version
+
+# We gotta build our own version of Ninja as well
+ENV NINJAVER=1.10.0
+RUN \
+	curl -sL -o ninja.tar.gz https://github.com/ninja-build/ninja/archive/v${NINJAVER}.tar.gz && \
+	tar -xf ninja.tar.gz && \
+	cd ninja-* && \
+	cmake -Bbuild-cmake -H. && \
+	cmake --build build-cmake && \
+	cp ./build-cmake/ninja /usr/bin/ninja && \
+	cd ../ && \
+	rm -r ./ninja-* && \
+	rm ./*.tar.gz
 
 # Need to manually build vulkan headers and libvulkan
 ENV VULKANVER=1.2.135
@@ -71,7 +85,7 @@ RUN \
 	rm -r ./Vulkan-Loader*
 
 # We need to build a custom version of SDL2 as well
-ENV SDL2VER=2.0.10
+ENV SDL2VER=2.0.12
 RUN \
 	curl -sL -o SDL2.tar.gz https://www.libsdl.org/release/SDL2-${SDL2VER}.tar.gz && \
 	tar -xf SDL2.tar.gz && \
