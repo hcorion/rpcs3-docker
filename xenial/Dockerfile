@@ -37,7 +37,7 @@ RUN \
 	rm ./*.deb
 
 # Setup newer CMake
-ENV CMAKEVER=3.16.4
+ENV CMAKEVER=3.15.7
 RUN \
 	curl -sLO https://cmake.org/files/v${CMAKEVER%.*}/cmake-${CMAKEVER}-Linux-x86_64.sh && \
 	sh cmake-${CMAKEVER}-Linux-x86_64.sh --skip-license && \
