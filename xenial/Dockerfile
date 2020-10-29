@@ -4,7 +4,7 @@ LABEL maintainer="hcorion"
 
 ENV QTVER=5.14.2
 ENV QTVERMIN=514
-ENV LLVMVER=10
+ENV LLVMVER=11
 ENV GCCVER=9
 
 ENV CLANG_BINARY=clang-${LLVMVER}
@@ -15,7 +15,7 @@ ENV GXX_BINARY=g++-${GCCVER}
 
 RUN \
 	apt-get update -y && \
-	apt-get install -y curl software-properties-common apt-transport-https && \
+	apt-get install -y curl libcurl4-gnutls-dev software-properties-common apt-transport-https && \
 	curl -Lvs https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
 	add-apt-repository -y ppa:beineri/opt-qt-${QTVER}-xenial && \
 	add-apt-repository -y ppa:ubuntu-toolchain-r/test && \
@@ -31,8 +31,8 @@ RUN \
 	apt-get install --only-upgrade dpkg
 	
 RUN \
-	curl -sLO http://http.us.debian.org/debian/pool/main/g/glew/libglew2.1_2.1.0-4_amd64.deb && \
-	curl -sLO http://http.us.debian.org/debian/pool/main/g/glew/libglew-dev_2.1.0-4_amd64.deb && \
+	curl -sLO http://http.us.debian.org/debian/pool/main/g/glew/libglew2.2_2.2.0-1_amd64.deb && \
+	curl -sLO http://http.us.debian.org/debian/pool/main/g/glew/libglew-dev_2.2.0-1_amd64.deb && \
 	dpkg -i ./*.deb && \
 	rm ./*.deb
 
@@ -45,7 +45,7 @@ RUN \
 	cmake --version
 
 # We gotta build our own version of Ninja as well
-ENV NINJAVER=1.10.0
+ENV NINJAVER=1.10.1
 RUN \
 	curl -sL -o ninja.tar.gz https://github.com/ninja-build/ninja/archive/v${NINJAVER}.tar.gz && \
 	tar -xf ninja.tar.gz && \
@@ -58,8 +58,8 @@ RUN \
 	rm ./*.tar.gz
 
 # Need to manually build vulkan headers and libvulkan
-ENV VULKAN_HEADER_VER=1.2.148.0
-ENV VULKAN_LOADER_VER=1.2.148.1
+ENV VULKAN_HEADER_VER=1.2.154.0
+ENV VULKAN_LOADER_VER=1.2.154.1
 RUN \
 	curl -sL -o Vulkan-Headers.tar.gz https://github.com/KhronosGroup/Vulkan-Headers/archive/sdk-${VULKAN_HEADER_VER}.tar.gz && \
 	tar -xf Vulkan-Headers*.tar.gz && \
